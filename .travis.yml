@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t stubeezy/fib-react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true stubeezy/fib-react-test npm test -- --coverage
+
+after_success:
+  - docker build -t stubeezy/fib-client ./client
+  - docker build -t stubeezy/fib-nginx ./nginx
+  - docker build -t stubeezy/fib-server ./server
+  - docker build -t stubeezy/fib-worker ./worker
+  # Logging into docker CLI
+  - echo "$DOCKER_PW" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push stubeezy/fib-client
+  - docker push stubeezy/fib-nginx
+  - docker push stubeezy/fib-server
+  - docker push stubeezy/fib-worker
