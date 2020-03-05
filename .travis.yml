@@ -31,5 +31,5 @@ deploy:
   bucker_path: docker-fib
   on:
     branch: master
-  access_key_id: $AWS_SECRET_KEY
-  secret_access_key: $AWS_SECRET_KEY_PW
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
